@@ -1,5 +1,4 @@
-<div align="center">
-</div>
+
 Pulsar Grid: Digital Twin-Enabled Smart Grid for Hybrid Renewable Energy Integration
 
 # Overview
