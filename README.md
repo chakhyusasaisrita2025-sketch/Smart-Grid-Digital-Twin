@@ -159,7 +159,7 @@ Rather than treating generation, monitoring, storage, and maintenance as indepen
 
 ## Contributors
 
-* Pranav J
+* https://github.com/29EEE-PranavJ
 * Chakhyusa Saisrita Mittra
 
 ---
