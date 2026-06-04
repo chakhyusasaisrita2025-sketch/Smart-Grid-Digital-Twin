@@ -2,5 +2,7 @@
   "name": "SmartGrid Digital Twin",
   "description": "A comprehensive digital twin simulation of a hybrid renewable energy smart grid with real-time analytics, 3D visualization, and mathematical validation.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
