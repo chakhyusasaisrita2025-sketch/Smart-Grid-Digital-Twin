@@ -44,7 +44,7 @@ This project is intended for academic, research, and educational purposes.
 
 This contains everything you need to run your app locally.
 
-View your app in AI Studio: https://ai.studio/apps/d5fe6a99-7646-4bf5-a615-49d18c22bd63
+View your app in AI Studio: https://ai.studio/apps/d5fe6a99-7646-4bf5-a615-49d18c22bd63?fullscreenApplet=true
 
 ## Run Locally
 
