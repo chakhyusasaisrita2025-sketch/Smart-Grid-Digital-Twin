@@ -52,6 +52,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toPng } from 'html-to-image';
 import { SimulationEngine, SimulationState, SwarmAgent, EnergyManagementStrategy, SotaBenchmarkMetrics } from './lib/simulation';
 import { fetchWeatherForecast } from './services/weatherService';
+import MetricsLab from './components/MetricsLab';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -672,6 +673,7 @@ const Stat = ({ label, value, unit, icon: Icon, color }: { label: string, value:
 
 export default function App() {
   const [results, setResults] = useState<SimulationState[]>([]);
+  const [currentView, setCurrentView] = useState<'simulation' | 'metrics-lab'>('simulation');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [aiInsight, setAiInsight] = useState<string>("");
@@ -1449,6 +1451,30 @@ ${results.map(r => `${r.time},${r.solarPower.toFixed(1)},${r.windPower.toFixed(1
             </div>
           </div>
 
+          {/* View Toggler */}
+          <div className="hidden md:flex items-center bg-slate-950/60 p-1 rounded-xl border border-slate-800 gap-1">
+            <button
+              onClick={() => setCurrentView('simulation')}
+              className={cn(
+                "px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer",
+                currentView === 'simulation' ? "bg-sky-500 text-slate-950 font-black shadow-md shadow-sky-500/20" : "text-slate-400 hover:text-white"
+              )}
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              Digital Twin Simulation
+            </button>
+            <button
+              onClick={() => setCurrentView('metrics-lab')}
+              className={cn(
+                "px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer",
+                currentView === 'metrics-lab' ? "bg-indigo-500 text-slate-950 font-black shadow-md shadow-indigo-500/20" : "text-slate-400 hover:text-white"
+              )}
+            >
+              <Database className="w-3.5 h-3.5" />
+              Real-Time Metrics Lab
+            </button>
+          </div>
+
           <div className="flex items-center gap-4">
             <div className={cn(
               "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500",
@@ -1641,7 +1667,9 @@ if __name__ == "__main__":
         </div>
       </header>
 
-      <main ref={dashboardRef} className="max-w-[1600px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <main ref={dashboardRef} className="max-w-[1600px] mx-auto p-6">
+        {currentView === 'simulation' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left Column: Stats & 3D View */}
         <div className="lg:col-span-4 space-y-6">
@@ -3129,7 +3157,24 @@ if __name__ == "__main__":
             </div>
           </Card>
         </div>
-      </main>
+      </div>
+    ) : (
+        <MetricsLab
+          results={results}
+          benchmarkMetrics={benchmarkMetrics}
+          activeStrategy={activeStrategy}
+          isManualMode={isManualMode}
+          onStrategyChange={(strat) => {
+            setActiveStrategy(strat);
+            runSimulation(isManualMode, manualAllocations, strat);
+          }}
+          onReset={() => {
+            setActiveStrategy('heuristic');
+            runSimulation(false, manualAllocations, 'heuristic');
+          }}
+        />
+      )}
+    </main>
 
       {/* Footer */}
       <footer className="border-t border-slate-800 p-6 mt-12 bg-slate-900/50">
